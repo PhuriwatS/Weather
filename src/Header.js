@@ -63,7 +63,7 @@ class Header extends Component {
       }
       else if (this.state.txtConditionSearch === 'coord') {
         let splitLatLon = this.state.txtSearch.split(',');
-        if (response[i].data.coord.lat === splitLatLon[0] && response.data[i].coord.lon === splitLatLon[1]) {
+        if (response.data[i].coord.lat === splitLatLon[0] && response.data[i].coord.lon === splitLatLon[1]) {
           this.getCityDetail(response.data[i].id);
         }
       }
