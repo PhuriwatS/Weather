@@ -1,4 +1,8 @@
 /* ===== ALL ===== */
+.App {
+  min-width: 420px;
+  max-width: 1024px;
+}
 .div-centered{
     float: none;
     margin: 0 auto;
