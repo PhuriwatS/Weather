@@ -45,33 +45,16 @@ class Header extends Component {
   }
 
   handleClickSearch() {
-    return axios.get('./CityList.json')
-            .then(
-              response => this.getCityId(response)
-            )
-            .catch(function (error) {
-              console.log(error);
-            });
-  }
-
-  getCityId(response) {
-    for (let i = 0; i < response.data.length; i++) {
-      if (this.state.txtConditionSearch === 'name') {
-        if (response.data[i].name === this.state.txtSearch) {
-          this.getCityDetail(response.data[i].id);
-        }
-      }
-      else if (this.state.txtConditionSearch === 'coord') {
-        let splitLatLon = this.state.txtSearch.split(',');
-        if (response.data[i].coord.lat === splitLatLon[0] && response.data[i].coord.lon === splitLatLon[1]) {
-          this.getCityDetail(response.data[i].id);
-        }
-      }
+    let parameterWeather;
+    let splitLatLon;
+    if (this.state.txtConditionSearch === 'name') {
+      parameterWeather = 'q=' + this.state.txtSearch;
     }
-  }
-
-  getCityDetail(cityId) {
-    return axios.get('http://api.openweathermap.org/data/2.5/weather?id='+cityId+'&APPID=938beb6f4eafa00a4b7835ae3653db46&units=metric')
+    else if (this.state.txtConditionSearch === 'coord') {
+      splitLatLon = this.state.txtSearch.split(',');
+      parameterWeather = 'lat=' + splitLatLon[0] + '&lon=' + splitLatLon[1];
+    }
+    return axios.get('http://api.openweathermap.org/data/2.5/weather?'+parameterWeather+'&APPID=938beb6f4eafa00a4b7835ae3653db46&units=metric')
             .then(
               response => this.putInformation(response)
             )
@@ -82,6 +65,9 @@ class Header extends Component {
 
   putInformation(response) {
     let information = response.data;
+    console.log(information.coord.lat);
+    console.log(information.coord.lon);
+    console.log('information is ');
     console.log(information);
     this.setState({
       weatherIcon: 'http://openweathermap.org/img/w/'+information.weather[0].icon+'.png',
@@ -121,7 +107,7 @@ class Header extends Component {
         </div>
         <div className='App-content'>
           <div className='App-content1'>
-            <img src={this.state.weatherIcon} /> <br /><br />
+            <img src={this.state.weatherIcon} alt='' /> <br /><br />
             {this.state.mainTemp} <br /><br />
             {this.state.weatherDescription}
           </div>
